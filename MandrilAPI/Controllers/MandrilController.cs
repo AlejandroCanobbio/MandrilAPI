@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using MandrilAPI.Helpers;
 using MandrilAPI.Models;
 using MandrilAPI.Services;
@@ -9,14 +10,21 @@ namespace MandrilAPI.Controllers;
 [Route("api/[controller]")]
 public class MandrilController : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<IEnumerable<Mandril>> GetMandriles()
+    private readonly MandrilService _mandrilService;
+    public MandrilController(MandrilService mandrilService)
     {
-        return Ok(MandrilDataStore.Current.Mandriles);
+        _mandrilService = mandrilService;
+    }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Mandril>>> GetMandriles()
+    {
+        //return Ok(MandrilDataStore.Current.Mandriles);
+        var mandriles = await _mandrilService.ObtenerTodos();
+        return Ok(mandriles);
     }
 
     [HttpGet("{mandrilId}")]
-    public ActionResult<Mandril> GetMandril(int mandrilId)
+    public ActionResult<Mandril> GetMandril(string mandrilId)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -49,7 +57,7 @@ public class MandrilController : ControllerBase
     }
 
     [HttpPut("{mandrilId}")]
-    public ActionResult<Mandril> PutMandril([FromRoute] int mandrilId, [FromBody] Mandrilinsert mandrilinsert)
+    public ActionResult<Mandril> PutMandril([FromRoute] string mandrilId, [FromBody] Mandrilinsert mandrilinsert)
     { 
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -63,7 +71,7 @@ public class MandrilController : ControllerBase
     }
 
     [HttpDelete("{mandrilId}")]
-    public ActionResult<Mandril> DeleteMandril(int mandrilId)
+    public ActionResult<Mandril> DeleteMandril(string mandrilId)
     { 
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 

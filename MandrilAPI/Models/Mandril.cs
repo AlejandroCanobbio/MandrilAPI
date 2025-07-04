@@ -1,8 +1,12 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 namespace MandrilAPI.Models;
 
 public class Mandril
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; } = null!;
 
     public string Nombre { get; set; } = string.Empty;
 

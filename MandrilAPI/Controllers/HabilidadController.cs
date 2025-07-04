@@ -10,7 +10,7 @@ namespace MandrilAPI.Controllers;
 public class HabilidadController : ControllerBase
 {
     [HttpGet]
-    public ActionResult<Habilidad> GetHabilidades(int mandrilId)
+    public ActionResult<Habilidad> GetHabilidades(string mandrilId)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -23,7 +23,7 @@ public class HabilidadController : ControllerBase
     }
 
     [HttpGet("{habilidadId}")]
-    public ActionResult<Habilidad> GetHabilidad(int mandrilId, int habilidadId)
+    public ActionResult<Habilidad> GetHabilidad(string mandrilId, int habilidadId)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -43,7 +43,7 @@ public class HabilidadController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Habilidad> PostHabilidad([FromRoute] int mandrilId, [FromBody] HabilidadInsert habilidadInsert)
+    public ActionResult<Habilidad> PostHabilidad([FromRoute] string mandrilId, [FromBody] HabilidadInsert habilidadInsert)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -77,7 +77,7 @@ public class HabilidadController : ControllerBase
     }
 
     [HttpPut("{habilidadId}")]
-    public ActionResult<Habilidad> PutHabilidad(int mandrilId, int habilidadId, HabilidadInsert habilidadInsert)
+    public ActionResult<Habilidad> PutHabilidad(string mandrilId, int habilidadId, HabilidadInsert habilidadInsert)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
@@ -106,7 +106,7 @@ public class HabilidadController : ControllerBase
     }
 
     [HttpDelete("{habilidadId}")]
-    public ActionResult<Habilidad> DeleteHabilidad(int mandrilId, int habilidadId)
+    public ActionResult<Habilidad> DeleteHabilidad(string mandrilId, int habilidadId)
     {
         var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
 
