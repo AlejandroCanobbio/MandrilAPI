@@ -19,6 +19,18 @@ public class MandrilService
         return await _mandriles.Find(_ => true).ToListAsync();
     }
 
+    // public async Task<Mandril> ObtenerPorId(string id)
+    // {
+    //     var filtro = Builders<Mandril>.Filter.Eq(m => m.Id, id);
+    //     return await _mandriles.Find(filtro).ToListAsync();
+    // }
+
+    public async Task<Mandril?> ObtenerPorId(string id)
+    {
+        var filtro = Builders<Mandril>.Filter.Eq(m => m.Id, id);
+        return await _mandriles.Find(filtro).FirstOrDefaultAsync();
+    }
+
     public async Task Crear(Mandril mandril)
     {
         await _mandriles.InsertOneAsync(mandril);

@@ -24,9 +24,11 @@ public class MandrilController : ControllerBase
     }
 
     [HttpGet("{mandrilId}")]
-    public ActionResult<Mandril> GetMandril(string mandrilId)
+    public async Task<ActionResult<Mandril>> GetMandril(string mandrilId)
     {
-        var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
+        //var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
+
+        var mandril = await _mandrilService.ObtenerPorId(mandrilId);
 
         if (mandril == null)
         {
