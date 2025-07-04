@@ -38,22 +38,18 @@ public class MandrilController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Mandril> PostMandril(Mandrilinsert mandrilinsert)
+    public async Task<ActionResult<Mandril>> PostMandril(Mandrilinsert mandrilinsert)
     {
-
-        var maxMandrilId = MandrilDataStore.Current.Mandriles.Max(x => x.Id);
-
         var mandrilNuevo = new Mandril()
         {
-            Id = maxMandrilId + 1,
             Nombre = mandrilinsert.Nombre,
             Apellido = mandrilinsert.Apellido
         };
 
-        MandrilDataStore.Current.Mandriles.Add(mandrilNuevo);
-
+        //MandrilDataStore.Current.Mandriles.Add(mandrilNuevo);
+        var mandrilCrear = _mandrilService.Crear(mandrilNuevo);
         return CreatedAtAction(nameof(GetMandril),
-            new { mandrilId = mandrilNuevo.Id },
+            new { mandrilId = mandrilCrear.Id },
             mandrilNuevo
         );
     }

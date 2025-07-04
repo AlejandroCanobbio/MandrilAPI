@@ -39,3 +39,4 @@ C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\De
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\SharpCompress.dll
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\Snappier.dll
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\ZstdSharp.dll
+C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\obj\Debug\net9.0\MandrilAPI.sourcelink.json
