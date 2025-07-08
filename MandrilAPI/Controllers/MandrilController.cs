@@ -47,9 +47,9 @@ public class MandrilController : ControllerBase
         };
 
         //MandrilDataStore.Current.Mandriles.Add(mandrilNuevo);
-        var mandrilCrear = _mandrilService.Crear(mandrilNuevo);
+        var mandrilCrear = await _mandrilService.Crear(mandrilNuevo);
         return CreatedAtAction(nameof(GetMandril),
-            new { mandrilId = mandrilCrear.Id },
+            new { mandrilId = mandrilCrear?.Id },
             mandrilNuevo
         );
     }
@@ -57,28 +57,36 @@ public class MandrilController : ControllerBase
     [HttpPut("{mandrilId}")]
     public ActionResult<Mandril> PutMandril([FromRoute] string mandrilId, [FromBody] Mandrilinsert mandrilinsert)
     { 
-        var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
+        var mandril = _mandrilService.ObtenerPorId(mandrilId);
 
         if (mandril == null)
         {
             return NotFound(Mensajes.Mandril.NotFound);
         }
-        mandril.Nombre = mandrilinsert.Nombre;
-        mandril.Apellido = mandrilinsert.Apellido;
+        // mandril.Nombre = mandrilinsert.Nombre;
+        // mandril.Apellido = mandrilinsert.Apellido;
+        var mandrilActualizado = _mandrilService.Actualizar(mandrilId, new Mandril
+        {
+            Nombre = mandrilinsert.Nombre,
+            Apellido = mandrilinsert.Apellido
+        });
+
+
         return NoContent();
     }
 
     [HttpDelete("{mandrilId}")]
     public ActionResult<Mandril> DeleteMandril(string mandrilId)
     { 
-        var mandril = MandrilDataStore.Current.Mandriles.FirstOrDefault(x => x.Id == mandrilId);
+        var mandril = _mandrilService.ObtenerPorId(mandrilId);
 
         if (mandril == null)
         {
             return NotFound(Mensajes.Mandril.NotFound);
         }
 
-        MandrilDataStore.Current.Mandriles.Remove(mandril);
+        //MandrilDataStore.Current.Mandriles.Remove(mandril);
+        var mandrilEliminar = _mandrilService.Eliminar(mandrilId);
         return NoContent();
     }
 }

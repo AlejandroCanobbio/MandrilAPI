@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<MandrilService>();
+builder.Services.AddScoped<HabilidadService>();
 
 
 
@@ -25,7 +26,8 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var mandrilService = scope.ServiceProvider.GetRequiredService<MandrilService>();
-    await mandrilService.CargarMandrilesDePrueba();
+    var habilidadService = scope.ServiceProvider.GetRequiredService<HabilidadService>();
+    //await mandrilService.CargarMandrilesDePrueba();
 }
 
 app.UseHttpsRedirection();

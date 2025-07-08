@@ -31,9 +31,26 @@ public class MandrilService
         return await _mandriles.Find(filtro).FirstOrDefaultAsync();
     }
 
-    public async Task Crear(Mandril mandril)
+    public async Task<Mandril?> Crear(Mandril mandril)
     {
         await _mandriles.InsertOneAsync(mandril);
+        return mandril;
+    }
+
+    public async Task Actualizar(string id, Mandril mandrilActualizado)
+    {
+        var filtro = Builders<Mandril>.Filter.Eq(m => m.Id, id);
+
+        var update = Builders<Mandril>.Update
+            .Set(m => m.Nombre, mandrilActualizado.Nombre)
+            .Set(m => m.Apellido, mandrilActualizado.Apellido);
+        await _mandriles.UpdateOneAsync(filtro, update);
+    }
+
+    public async Task Eliminar(string id)
+    {
+        var filtro = Builders<Mandril>.Filter.Eq(m => m.Id, id);
+        await _mandriles.DeleteOneAsync(filtro);
     }
 
     // Opcional: método para cargar los mandriles precargados
