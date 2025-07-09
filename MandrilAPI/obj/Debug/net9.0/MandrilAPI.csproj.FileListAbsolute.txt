@@ -43,3 +43,5 @@ C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\obj\De
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\FluentValidation.dll
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\FluentValidation.AspNetCore.dll
 C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\alex0\OneDrive\Documentos\proyectos\dotnet\MandrilAPI\MandrilAPI\bin\Debug\net9.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

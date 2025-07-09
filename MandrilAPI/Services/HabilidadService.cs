@@ -44,21 +44,9 @@ public class HabilidadService
         var habilidad = resultado?.Habilidades?.FirstOrDefault(h => h.Id == habilidadId);
         return habilidad != null ? new List<Habilidad> { habilidad } : new List<Habilidad>();
     }
-    public async Task<Habilidad> InsertarHabilidad(string mandrilId, HabilidadInsert habilidadInsert)
+    public async Task<Habilidad> InsertarHabilidad(string mandrilId, Habilidad nuevaHabilidad, Mandril mandril)
     {
-        var mandril = await ObtenerPorId(mandrilId);
-
-        if (mandril == null)
-        {
-            throw new Exception(Mensajes.Mandril.NotFound);
-        }
-
-        var nuevaHabilidad = new Habilidad
-        {
-            Id = mandril.Habilidades?.Count > 0 ? mandril.Habilidades.Max(h => h.Id) + 1 : 1,
-            Nombre = habilidadInsert.Nombre,
-            Potencia = habilidadInsert.Potencia
-        };
+        //var mandril = await ObtenerPorId(mandrilId);
 
         mandril.Habilidades ??= new List<Habilidad>();
         mandril.Habilidades.Add(nuevaHabilidad);

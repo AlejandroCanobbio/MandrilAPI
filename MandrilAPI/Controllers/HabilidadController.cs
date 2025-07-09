@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using AutoMapper;
+using MandrilAPI.DTOs;
 using MandrilAPI.Helpers;
 using MandrilAPI.Models;
 using MandrilAPI.Services;
@@ -10,12 +12,14 @@ namespace MandrilAPI.Controllers;
 public class HabilidadController : ControllerBase
 {
     private readonly HabilidadService _habilidadService;
-    public HabilidadController(HabilidadService mandrilService)
+    private readonly IMapper _mapper;
+    public HabilidadController(HabilidadService mandrilService, IMapper mapper)
     {
         _habilidadService = mandrilService;
+        _mapper = mapper;
     }
     [HttpGet]
-    public async Task<ActionResult<Habilidad>> GetHabilidades(string mandrilId)
+    public async Task<ActionResult<HabilidadDto>> GetHabilidades(string mandrilId)
     {
         var mandril = await _habilidadService.ObtenerPorId(mandrilId);
 
@@ -23,12 +27,12 @@ public class HabilidadController : ControllerBase
         {
             return NotFound(Mensajes.Mandril.NotFound);
         }
-
-        return Ok(mandril.Habilidades);
+        var habilidadDtos = _mapper.Map<IEnumerable<HabilidadDto>>(mandril.Habilidades);
+        return Ok(habilidadDtos);
     }
 
     [HttpGet("{habilidadId}")]
-    public async Task<ActionResult<Habilidad>> GetHabilidad(string mandrilId, int habilidadId)
+    public async Task<ActionResult<HabilidadDto>> GetHabilidad(string mandrilId, int habilidadId)
     {
         var mandril = await _habilidadService.ObtenerPorId(mandrilId);
 
@@ -42,13 +46,13 @@ public class HabilidadController : ControllerBase
         if (habilidad == null) {
             return NotFound(Mensajes.Habilidad.NotFound);
         }
-
-        return Ok(habilidad);
+        var habilidadDto = _mapper.Map<HabilidadDto>(habilidad);
+        return Ok(habilidadDto);
         
     }
 
     [HttpPost]
-    public async Task<ActionResult<Habilidad>> PostHabilidad([FromRoute] string mandrilId, [FromBody] HabilidadInsert habilidadInsert)
+    public async Task<ActionResult<HabilidadDto>> PostHabilidad([FromRoute] string mandrilId, [FromBody] HabilidadCreateDto  habilidadDto)
     {
         var mandril = await _habilidadService.ObtenerPorId(mandrilId);
 
@@ -57,32 +61,27 @@ public class HabilidadController : ControllerBase
             return NotFound(Mensajes.Mandril.NotFound);
         }
 
-        var habilidadExiste = mandril.Habilidades?.FirstOrDefault(h => h.Nombre == habilidadInsert.Nombre);
+        var habilidadExiste = mandril.Habilidades?.FirstOrDefault(h => h.Nombre == habilidadDto.Nombre);
 
         if (habilidadExiste != null)
         {
             return BadRequest(Mensajes.Habilidad.NombreExistente);
         }
+
+        var habilidadNueva = _mapper.Map<Habilidad>(habilidadDto);
+        habilidadNueva.Id = mandril.Habilidades?.Count > 0 ? mandril.Habilidades.Max(h => h.Id) + 1 : 1;
+        var habilidad = await _habilidadService.InsertarHabilidad(mandrilId, habilidadNueva, mandril);
         
-        // var maxHabilidadId = mandril.Habilidades == null ? 0 : mandril.Habilidades.Max(x => x.Id);
-
-        // var habilidadNueva = new Habilidad()
-        // {
-        //     Id = maxHabilidadId + 1,
-        //     Nombre = habilidadInsert.Nombre,
-        //     Potencia = habilidadInsert.Potencia
-        // };
-
-        var habilidad = await _habilidadService.InsertarHabilidad(mandrilId, habilidadInsert);
+        var habilidadDtoResponse = _mapper.Map<HabilidadDto>(habilidad);
 
         return CreatedAtAction(nameof(GetHabilidad),
-            new { mandrilId = mandrilId , habilidadId = habilidad.Id },
-            habilidad
+            new { mandrilId = mandrilId, habilidadId = habilidad.Id },
+            habilidadDtoResponse
         );
     }
 
     [HttpPut("{habilidadId}")]
-    public async Task<ActionResult<Habilidad>> PutHabilidad(string mandrilId, int habilidadId, HabilidadInsert habilidadInsert)
+    public async Task<ActionResult<HabilidadDto>> PutHabilidad(string mandrilId, int habilidadId, HabilidadCreateDto  habilidadDto)
     {
         var mandril = await _habilidadService.ObtenerPorId(mandrilId);
 
@@ -97,15 +96,15 @@ public class HabilidadController : ControllerBase
             return NotFound(Mensajes.Habilidad.NotFound);
         }
 
-        var habilidadExiste = mandril.Habilidades?.FirstOrDefault(h => h.Nombre == habilidadInsert.Nombre);
+        var habilidadExiste = mandril.Habilidades?.FirstOrDefault(h => h.Nombre == habilidadDto.Nombre);
 
         if (habilidadExiste != null)
         {
             return BadRequest(Mensajes.Habilidad.NombreExistente);
         }
-
-        habilidad.Nombre = habilidadInsert.Nombre;
-        habilidad.Potencia = habilidadInsert.Potencia;
+        habilidad.Nombre = habilidadDto.Nombre;
+        habilidad.Potencia = habilidadDto.Potencia;
+        
         
         await _habilidadService.ActualizarHabilidad(mandrilId, habilidad, mandril);
         
@@ -113,7 +112,7 @@ public class HabilidadController : ControllerBase
     }
 
     [HttpDelete("{habilidadId}")]
-    public async Task<ActionResult<Habilidad>> DeleteHabilidad(string mandrilId, int habilidadId)
+    public async Task<ActionResult<HabilidadDto>> DeleteHabilidad(string mandrilId, int habilidadId)
     {
         var mandril = await _habilidadService.ObtenerPorId(mandrilId);
 
