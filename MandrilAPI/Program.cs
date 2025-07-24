@@ -13,6 +13,7 @@ builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("Mo
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 builder.Services.AddScoped<MandrilService>();
 builder.Services.AddScoped<HabilidadService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddControllers();
 builder.Services
     .AddFluentValidationAutoValidation()
@@ -35,6 +36,7 @@ using (var scope = app.Services.CreateScope())
 {
     var mandrilService = scope.ServiceProvider.GetRequiredService<MandrilService>();
     var habilidadService = scope.ServiceProvider.GetRequiredService<HabilidadService>();
+    var userService = scope.ServiceProvider.GetRequiredService<UserService>();
     //await mandrilService.CargarMandrilesDePrueba();
 }
 

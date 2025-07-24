@@ -1,3 +1,5 @@
+using MandrilAPI.Models;
+
 namespace MandrilAPI.Helpers;
 
 public static class Mensajes
@@ -11,6 +13,12 @@ public static class Mensajes
     {
         public const string NotFound = "La Habilidad Solicitada no existe";
         public const string NombreExistente = "Ya existe otra habilidad con el mismo nombre";
-        
+
+    }
+    public static class User
+    {
+        public const string NotFound = "El usuario no fue encontrado";
+        public const string CredencialesInvalidas = "Correo o clave incorrectos";
+        public const string CorreoExistente = "Ya existe un usuario con el mismo correo";
     }
 }
